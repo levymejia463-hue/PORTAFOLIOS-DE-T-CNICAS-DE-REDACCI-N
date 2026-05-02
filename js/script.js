@@ -205,12 +205,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                     
                     if (isMobile) {
-                        var mobileLink = document.createElement('div');
-                        mobileLink.style.cssText = 'text-align:center;padding:40px 20px;background:#f5f5f5;border-radius:8px;';
-                        mobileLink.innerHTML = '<p style="margin-bottom:20px;color:#333;font-size:1.1rem;">Ver PDF en dispositivo móvil</p>' +
-                            '<a href="' + work.pdfSrc + '" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:var(--primary, #007bff);color:white;text-decoration:none;border-radius:4px;font-weight:600;">Abrir PDF</a>' +
-                            '<p style="margin-top:15px;font-size:0.9rem;color:#666;">Toca el botón para ver o descargar el PDF</p>';
-                        pdfContainer.appendChild(mobileLink);
+                        var pdfViewer = document.createElement('div');
+                        pdfViewer.style.cssText = 'width:100%;text-align:center;';
+                        pdfViewer.innerHTML = '<p style="margin-bottom:15px;color:#333;">Cargando PDF...</p>';
+                        pdfContainer.appendChild(pdfViewer);
+                        
+                        if (typeof pdfjsLib === 'undefined') {
+                            var script = document.createElement('script');
+                            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                            script.onload = function() {
+                                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                                loadPDFMobile(work.pdfSrc, pdfViewer);
+                            };
+                            document.head.appendChild(script);
+                        } else {
+                            loadPDFMobile(work.pdfSrc, pdfViewer);
+                        }
                     } else {
                         var frame = document.createElement('iframe');
                         frame.src = work.pdfSrc;
@@ -295,4 +305,31 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('orientationchange', function() {
         setTimeout(setViewportHeight, 100);
     });
+
+    function loadPDFMobile(url, container) {
+        container.innerHTML = '';
+        pdfjsLib.getDocument(url).promise.then(function(pdf) {
+            for (var pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                pdf.getPage(pageNum).then(function(page) {
+                    var scale = container.offsetWidth / page.getViewport({scale: 1}).width;
+                    var viewport = page.getViewport({scale: scale});
+                    
+                    var canvas = document.createElement('canvas');
+                    canvas.style.cssText = 'width:100%;height:auto;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;';
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    container.appendChild(canvas);
+                    
+                    var context = canvas.getContext('2d');
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            }
+        }).catch(function(error) {
+            container.innerHTML = '<p style="color:#666;text-align:center;padding:20px;">No se pudo cargar el PDF. <a href="' + url + '" target="_blank">Abrir en nueva pestaña</a></p>';
+        });
+    }
 });
