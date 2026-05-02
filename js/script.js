@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Clear any old localStorage data to force using current data
+    localStorage.removeItem('portafolio_data');
+    
     var navbar = document.getElementById('navbar');
     var hamburger = document.getElementById('hamburger');
     var navMenu = document.getElementById('nav-menu');
@@ -14,43 +17,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var STORAGE_KEY = 'portafolio_data';
 
-    var currentWeekData = loadData();
-
-    function loadData() {
-        var stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            try {
-                var data = JSON.parse(stored);
-                Object.keys(data).forEach(function(key) {
-                    if (!data[key].works) {
-                        data[key] = {
-                            weekNumber: parseInt(key.replace('semana', '')),
-                            works: [{
-                                title: data[key].title || 'Trabajo ' + key,
-                                description: data[key].description || '',
-                                fecha: data[key].fecha || 'Fecha pendiente',
-                                pdfSrc: data[key].pdfSrc || ''
-                            }]
-                        };
-                    }
-                });
-                return data;
-            } catch (e) {
-                console.error('Error loading data:', e);
-            }
-        }
-        return {
-            semana1: {
+    var currentWeekData = {
+        'periodo-pasado': {
+            weekNumber: 0,
+            works: [{
+                title: 'Trabajo Periodo pasado',
+                description: 'En esta primera semana se abordaron los conceptos basicos.',
+                fecha: '15 de abril, 2026',
+                pdfSrc: 'assets/elvicio.pdf'
+            }]
+        },
+'semana1': {
                 weekNumber: 1,
                 works: [{
                     title: 'Trabajo Semana 1',
-                    description: 'En esta primera semana se abordaron los conceptos basicos.',
-                    fecha: '15 de abril, 2026',
-                    pdfSrc: 'assets/elvicio.pdf'
+                    description: 'En esta infografía se exploran los neologismos como elementos fundamentales en la evolución del lenguaje. Un neologismo es una palabra o expresión nueva, ya sea en una lengua o en un uso específico, que no está recogida en el diccionario estándar. Estos términos surgen por diversas razones: avances tecnológicos, cambios sociales, influencias de otros idiomas o simplemente por la creatividad lingüística. La infografía presenta las clasificaciones principales, ejemplos actuales y la importancia de documentar estos cambios en el idioma español.',
+                    fecha: '2 de mayo, 2026',
+                    imageSrc: 'assets/infografia.jpg',
+                    pdfSrc: 'assets/Referencias-Neologismos.pdf'
                 }]
             }
-        };
-    }
+    };
 
     function saveData() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(currentWeekData));
@@ -77,11 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
             var data = currentWeekData[weekKey];
             var weekNum = data.weekNumber;
             var mainWork = data.works[0];
+            var weekText = weekKey === 'periodo-pasado' ? 'Periodo pasado' : 'Semana ' + weekNum;
 
             var card = document.createElement('div');
             card.className = 'trabajo-card';
             card.setAttribute('data-week', weekKey);
-            card.innerHTML = '<div class="trabajo-week">Semana ' + weekNum + '</div>' +
+            card.innerHTML = '<div class="trabajo-week">' + weekText + '</div>' +
                 '<h3 class="trabajo-title">' + mainWork.title + '</h3>' +
                 '<p class="trabajo-date">' + mainWork.fecha + '</p>' +
                 (data.works.length > 1 ? '<small style="color:var(--gray);">+' + (data.works.length - 1) + ' trabajos mas</small>' : '');
@@ -91,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             trabajosGrid.appendChild(card);
 
             var sidebarItem = document.createElement('li');
-            sidebarItem.innerHTML = '<a href="#" class="sidebar-link" data-week="' + weekKey + '">Semana ' + weekNum + '</a>';
+            sidebarItem.innerHTML = '<a href="#" class="sidebar-link" data-week="' + weekKey + '">' + weekText + '</a>';
             sidebarMenu.appendChild(sidebarItem);
         });
 
@@ -183,11 +171,34 @@ document.addEventListener('DOMContentLoaded', function() {
             currentWorkIndex = workIdx;
 
             title.textContent = work.title;
-            weekBadge.textContent = 'Semana ' + data.weekNumber + ' - Trabajo ' + (workIdx + 1);
+            weekBadge.textContent = week === 'periodo-pasado' ? 'Periodo pasado' : 'Semana ' + data.weekNumber;
             description.textContent = work.description;
             date.textContent = work.fecha;
 
-            pdfContainer.innerHTML = '';
+        // Handle work image
+        var existingImage = modalContent.querySelector('.modal-image');
+        if (existingImage) existingImage.remove();
+
+        if (work.imageSrc && work.imageSrc !== '') {
+            var imageContainer = document.createElement('div');
+            imageContainer.className = 'modal-image';
+            imageContainer.style.cssText = 'margin: 20px 0; text-align: center;';
+            
+            var imageTitle = document.createElement('h1');
+            imageTitle.textContent = 'Infografía';
+            imageTitle.style.cssText = 'color: var(--black); font-size: 1.8rem; margin-bottom: 15px; font-family: Montserrat, sans-serif;';
+            
+            var workImage = document.createElement('img');
+            workImage.src = work.imageSrc;
+            workImage.alt = 'Infografía del trabajo';
+            workImage.style.cssText = 'max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);';
+            
+            imageContainer.appendChild(imageTitle);
+            imageContainer.appendChild(workImage);
+            modalContent.insertBefore(imageContainer, pdfContainer);
+        }
+
+        pdfContainer.innerHTML = '';
 
             if (work.pdfSrc && work.pdfSrc !== '') {
                 if (work.pdfSrc.startsWith('data:application/pdf')) {
