@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: 'Trabajo Semana 1',
                     description: 'En esta primera semana se abordaron los conceptos basicos.',
                     fecha: '15 de abril, 2026',
-                    pdfSrc: 'https://docs.google.com/gview?url=https://drive.google.com/uc?export=download&id=1ctqkAQzJ0gCE79GePxOpV3kEIJczIidM&embedded=true'
+                    pdfSrc: 'assets/elvicio.pdf'
                 }]
             }
         };
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     var object = document.createElement('object');
                     object.data = work.pdfSrc;
                     object.type = 'application/pdf';
-                    object.style.cssText = 'width:100%;height:500px;border:none;border-radius:4px;';
+                    object.style.cssText = 'width:100%;height:70vh;min-height:400px;border:none;border-radius:4px;';
 
                     var fallback = document.createElement('p');
                     fallback.style.cssText = 'color:var(--gray);font-size:0.9rem;text-align:center;padding:20px;';
@@ -202,15 +202,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     object.appendChild(fallback);
                     pdfContainer.appendChild(object);
                 } else {
-                    var frame = document.createElement('iframe');
-                    frame.src = work.pdfSrc;
-                    frame.style.cssText = 'width:100%;height:500px;border:none;border-radius:4px;';
-                    frame.setAttribute('allow', 'autoplay');
-                    frame.onerror = function() {
-                        frame.style.display = 'none';
-                        showFallbackLink();
-                    };
-                    pdfContainer.appendChild(frame);
+                    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                    
+                    if (isMobile) {
+                        var mobileLink = document.createElement('div');
+                        mobileLink.style.cssText = 'text-align:center;padding:40px 20px;background:#f5f5f5;border-radius:8px;';
+                        mobileLink.innerHTML = '<p style="margin-bottom:20px;color:#333;font-size:1.1rem;">Ver PDF en dispositivo móvil</p>' +
+                            '<a href="' + work.pdfSrc + '" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:var(--primary, #007bff);color:white;text-decoration:none;border-radius:4px;font-weight:600;">Abrir PDF</a>' +
+                            '<p style="margin-top:15px;font-size:0.9rem;color:#666;">Toca el botón para ver o descargar el PDF</p>';
+                        pdfContainer.appendChild(mobileLink);
+                    } else {
+                        var frame = document.createElement('iframe');
+                        frame.src = work.pdfSrc;
+                        frame.style.cssText = 'width:100%;height:70vh;min-height:500px;border:none;border-radius:4px;';
+                        frame.setAttribute('allow', 'autoplay');
+                        pdfContainer.appendChild(frame);
+                    }
                     
                     var link = document.createElement('p');
                     link.style.cssText = 'color:var(--gray);font-size:0.9rem;text-align:center;padding:20px;margin-top:10px;';
