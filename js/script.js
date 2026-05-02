@@ -205,21 +205,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                     
                     if (isMobile) {
-                        var pdfViewer = document.createElement('div');
-                        pdfViewer.style.cssText = 'width:100%;text-align:center;';
-                        pdfViewer.innerHTML = '<p style="margin-bottom:15px;color:#333;">Cargando PDF...</p>';
-                        pdfContainer.appendChild(pdfViewer);
+                        var pdfContainer_mobile = document.createElement('div');
+                        pdfContainer_mobile.id = 'pdf-mobile-viewer';
+                        pdfContainer_mobile.style.cssText = 'width:100%;text-align:center;';
+                        pdfContainer_mobile.innerHTML = '<p style="padding:20px;color:#666;">Cargando PDF...</p>';
+                        pdfContainer.appendChild(pdfContainer_mobile);
                         
                         if (typeof pdfjsLib === 'undefined') {
                             var script = document.createElement('script');
                             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
                             script.onload = function() {
                                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-                                loadPDFMobile(work.pdfSrc, pdfViewer);
+                                renderPDFMobile(work.pdfSrc, pdfContainer_mobile);
                             };
                             document.head.appendChild(script);
                         } else {
-                            loadPDFMobile(work.pdfSrc, pdfViewer);
+                            renderPDFMobile(work.pdfSrc, pdfContainer_mobile);
                         }
                     } else {
                         var frame = document.createElement('iframe');
