@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: 'Trabajo Semana 1',
                     description: 'En esta primera semana se abordaron los conceptos basicos.',
                     fecha: '15 de abril, 2026',
-                    pdfSrc: 'https://drive.google.com/file/d/1ctqkAQzJ0gCE79GePxOpV3kEIJczIidM/view?usp=drive_link'
+                    pdfSrc: 'https://docs.google.com/gview?url=https://drive.google.com/uc?export=download&id=1ctqkAQzJ0gCE79GePxOpV3kEIJczIidM&embedded=true'
                 }]
             }
         };
@@ -205,7 +205,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     var frame = document.createElement('iframe');
                     frame.src = work.pdfSrc;
                     frame.style.cssText = 'width:100%;height:500px;border:none;border-radius:4px;';
+                    frame.setAttribute('allow', 'autoplay');
+                    frame.onerror = function() {
+                        frame.style.display = 'none';
+                        showFallbackLink();
+                    };
                     pdfContainer.appendChild(frame);
+                    
+                    var link = document.createElement('p');
+                    link.style.cssText = 'color:var(--gray);font-size:0.9rem;text-align:center;padding:20px;margin-top:10px;';
+                    link.innerHTML = 'Si el PDF no carga, <a href="' + work.pdfSrc + '" target="_blank" rel="noopener">haz clic aquí para abrirlo en una nueva pestaña</a>.';
+                    pdfContainer.appendChild(link);
                 }
             } else {
                 var p = document.createElement('p');
