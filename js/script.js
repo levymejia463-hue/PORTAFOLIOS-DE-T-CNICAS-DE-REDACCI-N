@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: 'Trabajo Semana 1',
                     description: 'En esta primera semana se abordaron los conceptos basicos.',
                     fecha: '15 de abril, 2026',
-                    pdfSrc: 'assets/elvicio.pdf'
+                    pdfSrc: 'https://drive.google.com/file/d/1ctqkAQzJ0gCE79GePxOpV3kEIJczIidM/view?usp=drive_link'
                 }]
             }
         };
