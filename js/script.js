@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'periodo-pasado': {
             weekNumber: 0,
             works: [{
-                title: 'Trabajo Periodo pasado',
+                title: 'Trabajo Periodo anterior',
                 description: 'En esta primera semana se abordaron los conceptos basicos.',
                 fecha: '15 de abril, 2026',
                 pdfSrc: 'assets/elvicio.pdf'
