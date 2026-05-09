@@ -30,11 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
 'semana1': {
                 weekNumber: 1,
                 works: [{
-                    title: 'Trabajo Semana 1',
+                    title: 'Neologismos',
                     description: 'En esta infografía se exploran los neologismos como elementos fundamentales en la evolución del lenguaje. Un neologismo es una palabra o expresión nueva, ya sea en una lengua o en un uso específico, que no está recogida en el diccionario estándar. Estos términos surgen por diversas razones: avances tecnológicos, cambios sociales, influencias de otros idiomas o simplemente por la creatividad lingüística. La infografía presenta las clasificaciones principales, ejemplos actuales y la importancia de documentar estos cambios en el idioma español.',
                     fecha: '2 de mayo, 2026',
                     imageSrc: 'assets/infografia.jpg',
                     pdfSrc: 'assets/Referencias-Neologismos.pdf'
+                }]
+            },
+'semana2': {
+                weekNumber: 2,
+                works: [{
+                    title: 'LETRAS MAYÚSCULAS',
+                    description: 'Trabajo sobre el uso correcto de las letras mayúsculas en la redacción.',
+                    fecha: '9 de mayo, 2026',
+                    pdfSrc: 'assets/Letras Mayusculas.pdf'
+                }, {
+                    title: 'NÚMEROS ROMANOS',
+                    description: 'Trabajo sobre la correcta utilización de los números romanos.',
+                    fecha: '9 de mayo, 2026',
+                    pdfSrc: 'assets/TAREA 3.pdf'
+                }, {
+                    title: 'CONECTORES TEXTUALES',
+                    description: 'Trabajo sobre los conectores textuales y su uso en la redacción.',
+                    fecha: '9 de mayo, 2026',
+                    imageSrc: 'assets/CONECTORES TEXTUALES.jpeg',
+                    pdfSrc: ''
                 }]
             }
     };
@@ -185,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
             imageContainer.style.cssText = 'margin: 20px 0; text-align: center;';
             
             var imageTitle = document.createElement('h1');
-            imageTitle.textContent = 'Infografía';
+            imageTitle.textContent = work.title;
             imageTitle.style.cssText = 'color: var(--black); font-size: 1.8rem; margin-bottom: 15px; font-family: Montserrat, sans-serif;';
             
             var workImage = document.createElement('img');
@@ -241,10 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         pdfContainer.appendChild(frame);
                     }
                     
-                    var link = document.createElement('p');
-                    link.style.cssText = 'color:var(--gray);font-size:0.9rem;text-align:center;padding:20px;margin-top:10px;';
-                    link.innerHTML = 'Si el PDF no carga, <a href="' + work.pdfSrc + '" target="_blank" rel="noopener">haz clic aquí para abrirlo en una nueva pestaña</a>.';
-                    pdfContainer.appendChild(link);
                 }
             } else {
                 var p = document.createElement('p');
@@ -259,9 +275,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.works.length > 1) {
                 var nav = document.createElement('div');
                 nav.className = 'work-nav';
-                nav.innerHTML = '<button class="btn-icon work-prev"' + (workIdx === 0 ? ' disabled' : '') + '>← Anterior</button>' +
+                nav.innerHTML = '<button class="btn-icon work-prev"' + (workIdx === 0 ? ' disabled' : '') + '>‹</button>' +
                     '<span>' + (workIdx + 1) + ' / ' + data.works.length + '</span>' +
-                    '<button class="btn-icon work-next"' + (workIdx === data.works.length - 1 ? ' disabled' : '') + '>Siguiente →</button>';
+                    '<button class="btn-icon work-next"' + (workIdx === data.works.length - 1 ? ' disabled' : '') + '>›</button>';
 
                 modalContent.appendChild(nav);
 
