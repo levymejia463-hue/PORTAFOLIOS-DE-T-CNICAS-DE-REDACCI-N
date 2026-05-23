@@ -56,6 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     imageSrc: 'assets/CONECTORES TEXTUALES.jpeg',
                     pdfSrc: ''
                 }]
+            },
+'semana3': {
+                weekNumber: 3,
+                works: [{
+                    title: 'Diccionario visual, siglas, acrónimos y abreviaturas',
+                    description: 'Este trabajo consiste en un diccionario visual que recopila y define las siglas, acrónimos y abreviaturas más utilizados en el ámbito académico y profesional. Las siglas son abreviaciones formadas por las letras iniciales de una denominación (ONU, UNESCO), los acrónimos son siglas que se pronuncian como una palabra (láser, ovni), y las abreviaturas son representaciones abreviadas mediante supresión de letras (atte., pág., Dr.). Cada término se presenta con una representación gráfica para facilitar su identificación y memorización, convirtiéndolo en una herramienta pedagógica útil para dominar el lenguaje técnico y formal.',
+                    fecha: '16 de mayo, 2026',
+                    pdfSrc: 'assets/Diccionario visual, siglas, acrónimos y abreviaturas..pdf'
+                }]
             }
     };
 
