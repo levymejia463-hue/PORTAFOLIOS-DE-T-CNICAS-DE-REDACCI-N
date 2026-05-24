@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             weekNumber: 0,
             works: [{
                 title: 'Trabajo Periodo anterior',
-                description: 'En esta primera semana se abordaron los conceptos basicos.',
+                description: 'En esta primera semana se abordaron los conceptos básicos.',
                 fecha: '15 de abril, 2026',
                 pdfSrc: 'assets/elvicio.pdf'
             }]
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.innerHTML = '<div class="trabajo-week">' + weekText + '</div>' +
                 '<h3 class="trabajo-title">' + mainWork.title + '</h3>' +
                 '<p class="trabajo-date">' + mainWork.fecha + '</p>' +
-                (data.works.length > 1 ? '<small style="color:var(--gray);">+' + (data.works.length - 1) + ' trabajos mas</small>' : '');
+                (data.works.length > 1 ? '<small style="color:var(--gray);">+' + (data.works.length - 1) + ' trabajos más</small>' : '');
             card.addEventListener('click', function() {
                 openModal(weekKey, 0);
             });
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     var fallback = document.createElement('p');
                     fallback.style.cssText = 'color:var(--gray);font-size:0.9rem;text-align:center;padding:20px;';
-                    fallback.innerHTML = 'El PDF no se puede mostrar. <a href="#" onclick="event.preventDefault();window.open(\'' + work.pdfSrc + '\',\'_blank\');">Descargar aqui</a>.';
+                    fallback.innerHTML = 'El PDF no se puede mostrar. <a href="#" onclick="event.preventDefault();window.open(\'' + work.pdfSrc + '\',\'_blank\');">Descargar aquí</a>.';
                     object.appendChild(fallback);
                     pdfContainer.appendChild(object);
                 } else {
